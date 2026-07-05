@@ -479,16 +479,68 @@ def create_city_revenue_chart(df):
     return fig
 
     # ==========================================================
-# Top 10 Products by Sales
+# Sales Trend (by date)
 # ==========================================================
 
-def create_top_products_chart(df):
+def create_sales_trend_chart(df):
+
+    trend = (
+        df.groupby("FullDate", as_index=False)["Sales"]
+        .sum()
+        .sort_values("FullDate")
+    )
+
+    fig = px.line(
+        trend,
+        x="FullDate",
+        y="Sales",
+        markers=True
+    )
+
+    fig.update_traces(
+        line_color=COLORS["primary"],
+        line_width=3,
+        marker=dict(size=6, color=COLORS["primary"]),
+        hovertemplate="<b>%{x}</b><br>Sales: %{y:,}<extra></extra>"
+    )
+
+    style_chart(
+        fig,
+        "Sales Trend",
+        "Date",
+        "Sales"
+    )
+
+    return fig
+
+
+# ==========================================================
+# Sales by Category (alias expected by app.py)
+# ==========================================================
+
+def create_category_sales_chart(df):
+    return create_sales_category_chart(df)
+
+
+# ==========================================================
+# Sales by City (alias expected by app.py)
+# ==========================================================
+
+def create_city_sales_chart(df):
+    return create_top_cities_chart(df)
+
+
+# ==========================================================
+# Top N Products by Sales
+# ==========================================================
+
+def create_top_products_chart(df, top_n=10):
 
     products = (
         df.groupby("ProductName", as_index=False)["Sales"]
         .sum()
         .sort_values("Sales", ascending=False)
-        .head(10)
+        .head(top_n)
     )
 
     fig = px.bar(
