@@ -1,0 +1,101 @@
+ProductKey,ProductName,Category
+1,Headphones,Electronics
+2,Smartwatch,Electronics
+3,Smartphone,Electronics
+4,Laptop,Electronics
+5,Jacket,Clothing
+6,Sweater,Clothing
+7,T-Shirt,Clothing
+8,Jeans,Clothing
+9,Coffee Maker,Home & Kitchen
+10,Microwave,Home & Kitchen
+11,Blender,Home & Kitchen
+12,Toaster,Home & Kitchen
+13,Biography,Books
+14,Fantasy Book,Books
+15,Science Book,Books
+16,Novel,Books
+17,Board Game,Toys & Games
+18,Puzzle,Toys & Games
+19,Action Figure,Toys & Games
+20,Toy Car,Toys & Games
+21,Fish Oil,Vitamins and supplements
+22,Protein Powder,Vitamins and supplements
+23,Vitamin D,Vitamins and supplements
+24,Multivitamin,Vitamins and supplements
+25,Sunscreen,Skin care
+26,Cleanser,Skin care
+27,Moisturizer,Skin care
+28,Toner,Skin care
+29,Mascara,Makeup
+30,Blush,Makeup
+31,Lipstick,Makeup
+32,Foundation,Makeup
+33,Denim Jacket,Coats and jackets
+34,Rain Jacket,Coats and jackets
+35,Leather Jacket,Coats and jackets
+36,Winter Coat,Coats and jackets
+37,Road Bike,Bicycles
+38,Mountain Bike,Bicycles
+39,Hybrid Bike,Bicycles
+40,Electric Bike,Bicycles
+41,Sketchbook,Art and crafting materials
+42,Brushes,Art and crafting materials
+43,Paint Set,Art and crafting materials
+44,Canvas,Art and crafting materials
+45,Coffee Mug,Drinkware
+46,Water Bottle,Drinkware
+47,Tea Cup,Drinkware
+48,Wine Glass,Drinkware
+49,Eau de Toilette,Perfume and cologne
+50,Body Spray,Perfume and cologne
+51,Perfume Oil,Perfume and cologne
+52,Eau de Parfum,Perfume and cologne
+53,White Wine,Wine
+54,Rose Wine,Wine
+55,Red Wine,Wine
+56,Sparkling Wine,Wine
+57,Knee-High Socks,Socks
+58,Ankle Socks,Socks
+59,Wool Socks,Socks
+60,Cotton Socks,Socks
+61,Silk Sheets,Bedsheets
+62,Linen Sheets,Bedsheets
+63,Bamboo Sheets,Bedsheets
+64,Cotton Sheets,Bedsheets
+65,Framed Poster,Posters and artwork
+66,Canvas Print,Posters and artwork
+67,Art Print,Posters and artwork
+68,Digital Art,Posters and artwork
+69,Soy Candle,Candles
+70,Beeswax Candle,Candles
+71,Scented Candle,Candles
+72,Pillar Candle,Candles
+73,Body Lotion,Bath and body
+74,Body Scrub,Bath and body
+75,Bath Salts,Bath and body
+76,Shower Gel,Bath and body
+77,Dutch Oven,Cookware
+78,Frying Pan,Cookware
+79,Grill Pan,Cookware
+80,Saucepan,Cookware
+81,Nail File,Nail care
+82,Nail Clippers,Nail care
+83,Nail Polish,Nail care
+84,Cuticle Oil,Nail care
+85,Thongs,Underwear
+86,Boxers,Underwear
+87,Briefs,Underwear
+88,Panties,Underwear
+89,Oil Filter,Motor vehicle parts
+90,Brake Pads,Motor vehicle parts
+91,Spark Plugs,Motor vehicle parts
+92,Car Battery,Motor vehicle parts
+93,Charger,Mobile phone accessories
+94,Screen Protector,Mobile phone accessories
+95,Earbuds,Mobile phone accessories
+96,Phone Case,Mobile phone accessories
+97,Throw Blanket,Blankets
+98,Electric Blanket,Blankets
+99,Fleece Blanket,Blankets
+100,Weighted Blanket,Blankets
