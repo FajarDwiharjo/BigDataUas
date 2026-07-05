@@ -1,191 +1,104 @@
 import pandas as pd
-import plotly.express as px
 
 
-# ----------------------------
-# SALES TREND (LINE CHART)
-# ----------------------------
-def create_sales_trend_chart(df: pd.DataFrame):
+def calculate_metrics(df: pd.DataFrame) -> dict:
     """
-    Monthly/temporal sales trend line chart.
-    """
+    Calculate dashboard KPI metrics.
 
-    if df is None or df.empty:
-        return px.line(title="No data available")
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Filtered dataset.
 
-    date_col_candidates = ["Date", "date", "OrderDate", "order_date"]
-    sales_col_candidates = ["Sales", "sales", "TotalSales", "revenue", "Revenue", "amount"]
-
-    date_col = next((c for c in date_col_candidates if c in df.columns), None)
-    sales_col = next((c for c in sales_col_candidates if c in df.columns), None)
-
-    if not date_col or not sales_col:
-        return px.line(title="Missing required columns")
-
-    temp = df.copy()
-    temp[date_col] = pd.to_datetime(temp[date_col], errors="coerce")
-    temp = temp.dropna(subset=[date_col])
-
-    grouped = (
-        temp.groupby(temp[date_col].dt.to_period("M"))[sales_col]
-        .sum()
-        .reset_index()
-    )
-
-    grouped["date"] = grouped[date_col].astype(str)
-
-    fig = px.line(
-        grouped,
-        x="date",
-        y=sales_col,
-        markers=True,
-        title="📈 Sales Trend Over Time"
-    )
-
-    fig.update_layout(
-        template="plotly_dark",
-        height=400,
-        margin=dict(l=20, r=20, t=40, b=20)
-    )
-
-    return fig
-
-
-# ----------------------------
-# CATEGORY SALES (BAR)
-# ----------------------------
-def create_category_sales_chart(df: pd.DataFrame):
-    """
-    Sales by product category.
+    Returns
+    -------
+    dict
+        Dictionary containing KPI values.
     """
 
     if df is None or df.empty:
-        return px.bar(title="No data available")
+        return {
+            "total_sales": 0,
+            "total_orders": 0,
+            "total_quantity": 0,
+            "avg_order_value": 0.0,
+        }
 
-    sales_col_candidates = ["Sales", "sales", "TotalSales", "revenue", "Revenue", "amount"]
-    category_col_candidates = ["Category", "category", "ProductCategory", "product_category"]
+    # ----------------------------
+    # Detect columns automatically
+    # ----------------------------
 
-    sales_col = next((c for c in sales_col_candidates if c in df.columns), None)
-    category_col = next((c for c in category_col_candidates if c in df.columns), None)
-
-    if not sales_col or not category_col:
-        return px.bar(title="Missing required columns")
-
-    grouped = (
-        df.groupby(category_col)[sales_col]
-        .sum()
-        .reset_index()
-        .sort_values(sales_col, ascending=False)
+    sales_col = next(
+        (
+            c
+            for c in [
+                "Sales",
+                "sales",
+                "Revenue",
+                "revenue",
+                "TotalSales",
+                "amount",
+            ]
+            if c in df.columns
+        ),
+        None,
     )
 
-    fig = px.bar(
-        grouped,
-        x=category_col,
-        y=sales_col,
-        color=sales_col,
-        text_auto=True,
-        title="📦 Sales by Category"
+    quantity_col = next(
+        (
+            c
+            for c in [
+                "Quantity",
+                "quantity",
+                "Qty",
+                "qty",
+            ]
+            if c in df.columns
+        ),
+        None,
     )
 
-    fig.update_layout(
-        template="plotly_dark",
-        height=400,
-        margin=dict(l=20, r=20, t=40, b=20),
-        showlegend=False
+    order_col = next(
+        (
+            c
+            for c in [
+                "OrderID",
+                "OrderId",
+                "OrderKey",
+                "InvoiceID",
+                "InvoiceNo",
+            ]
+            if c in df.columns
+        ),
+        None,
     )
 
-    return fig
-
-
-# ----------------------------
-# CITY SALES (BAR)
-# ----------------------------
-def create_city_sales_chart(df: pd.DataFrame):
-    """
-    Sales performance by city.
-    """
-
-    if df is None or df.empty:
-        return px.bar(title="No data available")
-
-    sales_col_candidates = ["Sales", "sales", "TotalSales", "revenue", "Revenue", "amount"]
-    city_col_candidates = ["City", "city", "CityName", "city_name"]
-
-    sales_col = next((c for c in sales_col_candidates if c in df.columns), None)
-    city_col = next((c for c in city_col_candidates if c in df.columns), None)
-
-    if not sales_col or not city_col:
-        return px.bar(title="Missing required columns")
-
-    grouped = (
-        df.groupby(city_col)[sales_col]
-        .sum()
-        .reset_index()
-        .sort_values(sales_col, ascending=False)
+    total_sales = (
+        float(df[sales_col].sum())
+        if sales_col
+        else 0.0
     )
 
-    fig = px.bar(
-        grouped,
-        x=city_col,
-        y=sales_col,
-        color=sales_col,
-        text_auto=True,
-        title="🏙️ Sales by City"
+    total_quantity = (
+        int(df[quantity_col].sum())
+        if quantity_col
+        else 0
     )
 
-    fig.update_layout(
-        template="plotly_dark",
-        height=400,
-        margin=dict(l=20, r=20, t=40, b=20),
-        showlegend=False
+    if order_col:
+        total_orders = int(df[order_col].nunique())
+    else:
+        total_orders = len(df)
+
+    avg_order_value = (
+        total_sales / total_orders
+        if total_orders > 0
+        else 0.0
     )
 
-    return fig
-
-
-# ----------------------------
-# TOP PRODUCTS (HORIZONTAL BAR)
-# ----------------------------
-def create_top_products_chart(df: pd.DataFrame, top_n: int = 10):
-    """
-    Top N products by sales.
-    """
-
-    if df is None or df.empty:
-        return px.bar(title="No data available")
-
-    sales_col_candidates = ["Sales", "sales", "TotalSales", "revenue", "Revenue", "amount"]
-    product_col_candidates = ["Product", "product", "ProductName", "product_name"]
-
-    sales_col = next((c for c in sales_col_candidates if c in df.columns), None)
-    product_col = next((c for c in product_col_candidates if c in df.columns), None)
-
-    if not sales_col or not product_col:
-        return px.bar(title="Missing required columns")
-
-    grouped = (
-        df.groupby(product_col)[sales_col]
-        .sum()
-        .reset_index()
-        .sort_values(sales_col, ascending=False)
-        .head(top_n)
-    )
-
-    fig = px.bar(
-        grouped,
-        x=sales_col,
-        y=product_col,
-        orientation="h",
-        text_auto=True,
-        title=f"🏆 Top {top_n} Products by Sales"
-    )
-
-    fig.update_layout(
-        template="plotly_dark",
-        height=500,
-        margin=dict(l=20, r=20, t=40, b=20),
-        yaxis=dict(autorange="reversed")
-    )
-
-    return fig
-    
+    return {
+        "total_sales": total_sales,
+        "total_orders": total_orders,
+        "total_quantity": total_quantity,
+        "avg_order_value": avg_order_value,
+    }
